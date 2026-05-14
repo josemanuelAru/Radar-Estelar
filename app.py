@@ -12,7 +12,7 @@ st.title("🛰️ Centro de Mando: Radar de Exoplanetas")
 # --- LOGÍSTICA: CARGA DE DATOS Y CEREBRO ---
 @st.cache_data
 def cargar_datos():
-    df = pd.read_csv('exoTest.csv')
+    df = pd.read_csv('exoTest.csv.zip')
     return df
 
 @st.cache_resource
