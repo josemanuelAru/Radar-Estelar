@@ -4,3 +4,4 @@ numpy
 matplotlib
 tensorflow-cpu
 scipy
+gdown
