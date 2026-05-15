@@ -19,7 +19,7 @@ def cargar_datos():
 
 @st.cache_resource
 def cargar_cerebro():
-    return load_model('modelo_exoplanetas_v2.h5')
+   return load_model('modelo_exoplanetas_v3.h5')
 
 try:
     df = cargar_datos()
