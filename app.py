@@ -19,25 +19,9 @@ def cargar_datos():
 
 @st.cache_resource
 def cargar_cerebro():
-    import os
-    import gdown
     from tensorflow.keras.models import load_model
-    
-    archivo_modelo = 'modelo_exoplanetas_v4.h5'
-    
-    # Si el cerebro no está en el servidor de Streamlit, gdown vuela a Drive a por él
-    if not os.path.exists(archivo_modelo):
-        # ⚠️ ¡ATENCIÓN! Sustituya esto por el ID que copió de su enlace de Drive:
-        id_drive = '1xiFhDxGBDAQqqZm_puITBEE0ZzkMKYpT' 
-        
-        url = f'https://drive.google.com/uc?id={id_drive}'
-        try:
-            gdown.download(url, archivo_modelo, quiet=False)
-        except Exception as e:
-            st.error(f"Error en el puente aéreo: No se pudo descargar de Drive. ID: {id_drive}")
-            st.stop()
-            
-    return load_model(archivo_modelo)
+    # Despertamos al soldado equilibrado de la Versión 3
+    return load_model('modelo_exoplanetas_v3.h5')
 
 try:
     df = cargar_datos()
