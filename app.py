@@ -78,3 +78,30 @@ with col2:
         st.warning("🪐 EXOPLANETA REAL EN ESTE SECTOR")
     else:
         st.info("⭐ Estrella Vacía")
+
+# --- NUEVA FUNCIÓN: ESCANEO DE SECTOR COMPLETO ---
+st.divider()
+st.subheader("🔍 Escaneo Automático de Sector")
+
+if st.button("Iniciar Escaneo de Todas las Estrellas"):
+    with st.spinner("Escaneando el firmamento..."):
+        # Preparamos todos los datos
+        x_total = df.values.astype(float)
+        x_total_norm = (x_total - np.mean(x_total, axis=1, keepdims=True)) / (np.std(x_total, axis=1, keepdims=True) + 1e-8)
+        x_total_suave = np.apply_along_axis(lambda m: savgol_filter(m, window_length=15, polyorder=2), 1, x_total_norm)
+        x_total_final = x_total_suave.reshape(x_total_suave.shape[0], x_total_suave.shape[1], 1)
+        
+        # Predicción masiva
+        predicciones = modelo.predict(x_total_final)
+        
+        # Filtrar por el umbral que el usuario puso en el sidebar
+        hallazgos = []
+        for i, prob in enumerate(predicciones):
+            if prob[0] >= umbral:
+                hallazgos.append({"Fila (ID)": i, "Certeza": f"{prob[0]*100:.2f}%"})
+        
+        if hallazgos:
+            st.success(f"¡Se han detectado {len(hallazgos)} posibles anomalías!")
+            st.table(hallazgos) # Muestra la lista de filas sospechosas
+        else:
+            st.warning("No se han detectado anomalías con el umbral actual.")
