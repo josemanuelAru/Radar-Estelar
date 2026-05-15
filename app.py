@@ -103,8 +103,9 @@ st.subheader("🔍 Escaneo Automático de Sector")
 
 if st.button("Iniciar Escaneo de Todas las Estrellas"):
     with st.spinner("Escaneando el firmamento..."):
-        # Preparamos todos los datos
-        x_total = df.values.astype(float)
+        # ¡CORRECCIÓN AQUÍ! Quitamos la columna 'LABEL' (respuesta) antes de escanear
+        x_total = df.drop('LABEL', axis=1).values.astype(float)
+        
         x_total_norm = (x_total - np.mean(x_total, axis=1, keepdims=True)) / (np.std(x_total, axis=1, keepdims=True) + 1e-8)
         x_total_suave = np.apply_along_axis(lambda m: savgol_filter(m, window_length=15, polyorder=2), 1, x_total_norm)
         x_total_final = x_total_suave.reshape(x_total_suave.shape[0], x_total_suave.shape[1], 1)
